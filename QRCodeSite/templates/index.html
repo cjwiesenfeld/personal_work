@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                <div class="logo-title">
+                <img src="{{ url_for('static', filename='Simple.jpg') }}" class="image" />             
+                QR Code Generator
+            </div>
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="instruction-tagline">
+        <div class="container">
+            <p>Download QR codes for any occasion personal or professional. Completely free.</p>
+        </div>
+    </section>
+    <main>
+        <div class="container">
+            <form id="qr-form">
+                <label for="link-type">Select Link Type:</label>
+                <div class="linktype-icons">
+                    <div class="icon" data-linktype="url"><i class="fas fa-link"></i><p>URL</p></div>
+                    <div class="icon" data-linktype="text"><i class="fas fa-font"></i><p>Text</p></div>
+                    <div class="icon" data-linktype="email"><i class="fas fa-envelope"></i><p>Email</p></div>
+                    <div class="icon" data-linktype="phone"><i class="fas fa-phone"></i><p>Phone</p></div>
+                    <div class="icon" data-linktype="wifi"><i class="fas fa-wifi"></i><p>Wi-Fi</p></div>
+                </div>
+                <input type="hidden" id="link-type" name="link-type" value="url">
+                <label for="link">Enter Link:</label>
+                <input type="text" id="link" name="link" required>
+                
+
+
+
+
+
+                <div class="button-group">
+                    <button type="submit">Generate QR Code</button>
+                    <button type="button" id="reset-btn">Reset</button>
+                </div>
+            </form>
+            <div id="qr-result" class="qr-result">
+                <img id="qr-code" src="" alt="QR Code" style="display:none;">
+                <label for="filetype">Select File Type:</label>
+                <div class="filetype-icons">
+                    <div class="icon" data-filetype="png"><i class="fas fa-file-image"></i><p>PNG</p></div>
+                    <div class="icon" data-filetype="jpeg"><i class="fas fa-file-image"></i><p>JPEG</p></div>
+                    <div class="icon" data-filetype="svg"><i class="fas fa-file-code"></i><p>SVG</p></div>
+                    <div class="icon" data-filetype="pdf"><i class="fas fa-file-pdf"></i><p>PDF</p></div>
+                </div>
+                <input type="hidden" id="filetype" name="filetype" value="png">
+                <button id="download-btn" style="display:none;">Download QR Code</button>
+            </div>
+        </div>
+    </main>
+    <section id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>The Simple Engineering Group is on a mission to make the internet easy, free and accessible for everyone. In a word - Simple. Check out our other tools below.</p>
+        </div>
+    </section>
+    <section id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="mailto:info@example.com">simpledigital100@gmail.com</a></p>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 QR Code Generator. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        $(document).ready(function() {
+            $('#qr-form').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/generate',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#qr-code').attr('src', 'data:image/png;base64,' + response.img_base64).show();
+                        $('#download-btn').show();
+                    }
+                });
+            });
+
+            $('#download-btn').on('click', function() {
+                const link = $('#link').val();
+                const filetype = $('.filetype-icons .selected').data('filetype');
+                $('<form>', {
+                    "method": "POST",
+                    "action": "/download"
+                }).append($('<input>', {
+                    "name": "link",
+                    "value": link,
+                    "type": "hidden"
+                })).append($('<input>', {
+                    "name": "filetype",
+                    "value": filetype,
+                    "type": "hidden"
+                })).appendTo(document.body).submit();
+            });
+
+            $('#reset-btn').on('click', function() {
+                $('#link-type').val('url');
+                $('#link').val('');
+                $('#qr-code').hide();
+                $('#download-btn').hide();
+                $('.filetype-icons .icon').removeClass('selected');
+                $('.linktype-icons .icon').removeClass('selected');
+            });
+
+            $('.filetype-icons .icon').on('click', function() {
+                $('.filetype-icons .icon').removeClass('selected');
+                $(this).addClass('selected');
+                $('#filetype').val($(this).data('filetype'));
+            });
+
+            $('.linktype-icons .icon').on('click', function() {
+                $('.linktype-icons .icon').removeClass('selected');
+                $(this).addClass('selected');
+                $('#link-type').val($(this).data('linktype'));
+            });
+        });
+    </script>
+</body>
+</html>
