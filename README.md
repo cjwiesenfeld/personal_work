@@ -6,4 +6,6 @@
 # Project 2 - Coffee App (In progress):
   This app will allow users to rate and and find coffee near them.
   Opens the doors to less well known coffee sellers to make a name for themselves. (Bodegas, street carts, etc)
+# Project 3 - QR Code site:
+  If you need a QR code made, just paste the link and click create. 
   
