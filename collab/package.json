@@ -1,0 +1,14 @@
+{
+  "name": "collab",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd.. && cd backend && npm install"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "mongoose": "^8.9.0"
+  }
+}
