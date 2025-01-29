@@ -8,4 +8,8 @@
   Opens the doors to less well known coffee sellers to make a name for themselves. (Bodegas, street carts, etc)
 # Project 3 - QR Code site:
   If you need a QR code made, just paste the link and click create. 
+# Project 4 - Collab - The next big thing in employee retention:
+  Allow your employees to explore existing projects within your company.
+  Allow your hiring managers to advertise backlog projects to employees across the company.
+  Work gets done. Employees learn and grow on their terms. Win Win. 
   
